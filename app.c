@@ -74,6 +74,56 @@ void updateStudent(struct Student students[], int count) {
     }
 }
 
+void deleteStudent(struct Student students[], int *count) {
+    int id, i, j, found = 0;
+    printf("Enter ID to delete: ");
+    scanf("%d", &id);
+    for (i = 0; i < *count; i++) {
+        if (students[i].id == id) {
+            for (j = i; j < *count - 1; j++) {
+                students[j] = students[j + 1];
+            }
+            (*count)--;
+            found = 1;
+            printf("Student deleted successfully.\n");
+            break;
+        }
+    }
+    if (!found) {
+        printf("Student not found.\n");
+    }
+}
+
+void averageMarks(struct Student students[], int count) {
+    if (count == 0) {
+        printf("No students available.\n");
+        return;
+    }
+    float sum = 0;
+    for (int i = 0; i < count; i++) {
+        sum += students[i].marks;
+    }
+    printf("Average Marks: %.2f\n", sum / count);
+}
+
+void topperStudent(struct Student students[], int count) {
+    if (count == 0) {
+        printf("No students available.\n");
+        return;
+    }
+    int topIndex = 0;
+    for (int i = 1; i < count; i++) {
+        if (students[i].marks > students[topIndex].marks) {
+            topIndex = i;
+        }
+    }
+    printf("Topper:\n");
+    printf("ID: %d\n", students[topIndex].id);
+    printf("Name: %s\n", students[topIndex].name);
+    printf("Age: %d\n", students[topIndex].age);
+    printf("Marks: %.2f\n", students[topIndex].marks);
+}
+
 int main() {
     struct Student students[100];
     int count = 0;
@@ -83,7 +133,10 @@ int main() {
         printf("2. Display Students\n");
         printf("3. Search Student\n");
         printf("4. Update Student\n");
-        printf("5. Exit\n");
+        printf("5. Delete Student\n");
+        printf("6. Average Marks\n");
+        printf("7. Topper Student\n");
+        printf("8. Exit\n");
         printf("Enter choice: ");
         scanf("%d", &choice);
         switch (choice) {
@@ -100,6 +153,15 @@ int main() {
                 updateStudent(students, count);
                 break;
             case 5:
+                deleteStudent(students, &count);
+                break;
+            case 6:
+                averageMarks(students, count);
+                break;
+            case 7:
+                topperStudent(students, count);
+                break;
+            case 8:
                 return 0;
             default:
                 printf("Invalid choice.\n");
